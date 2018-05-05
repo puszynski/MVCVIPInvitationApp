@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Net.Mail;
 using Microsoft.AspNetCore.Mvc;
 using SimpleMVC_VIPInvitation.Models;
 
@@ -15,19 +13,49 @@ namespace SimpleMVC_VIPInvitation.Controllers
             return View();
         }
 
-        public IActionResult About()
+        public ViewResult About()
         {
-            ViewData["Message"] = "Your application description page.";
-
+            int hour = DateTime.Now.Hour;
+            ViewBag.Greeting = hour < 17 ? "Dzień dobry" : "Dobry wieczór";
             return View();
         }
 
-        public IActionResult Contact()
+        [HttpPost]
+        public ViewResult About(VipRsvpModel model)
         {
-            ViewData["Message"] = "Your contact page.";
+            if (ModelState.IsValid)
+            {
+                #region wysyłanie Maila
+                try
+                {
+                    MailMessage mail = new MailMessage();
+                    SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
-            return View();
+                    mail.From = new MailAddress("puszynski@gmail.com");
+                    mail.To.Add("tadamczewski@gmail.com");
+                    mail.Subject = "4 Pory Rocka - Lista VIP";
+                    mail.Body = "treść wiadomości";
+
+                    SmtpServer.Port = 587;
+                    SmtpServer.Credentials = new System.Net.NetworkCredential("username", "password");
+                    SmtpServer.EnableSsl = true;
+
+                    SmtpServer.Send(mail);                    
+                }
+                catch (Exception ex)
+                {
+                    //ToDo
+                }
+                #endregion
+                return View("Thanks", model);
+            }
+            else
+            {
+                return View(); // W razie niepoprawności wypełnienia formularza zwracamy ten sam widok + używając @Html.ValidationSummary() w widoku, uwidaczniamy komunikaty o błędach wypełnienia formularza // 
+            }
+            
         }
+
 
         public IActionResult Error()
         {

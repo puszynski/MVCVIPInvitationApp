@@ -1,0 +1,16 @@
+﻿@model SimpleMVC_VIPInvitation.Models.VipRsvpModel
+
+@{
+    ViewData["Title"] = "Thanks";
+}
+
+<h2>Dziękujemy @Model.Name</h2>
+
+@if(Model.IsPhotographer == true)
+{
+    @: Do zobaczenia w dniu koncertu, twoje imie i nazwisko zostanie zamieszone na liście VIP, aparat będzie twoją przepustką! 
+}
+else
+{
+    @: Twoja prośba zostanie indywidualnie rozpatrzona, dalsze informację otrzymasz drogą mailową! 
+}

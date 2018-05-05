@@ -1,7 +1,25 @@
-﻿@{
-    ViewData["Title"] = "About";
+﻿@model SimpleMVC_VIPInvitation.Models.VipRsvpModel
+
+@{
+    ViewData["Title"] = "Formularz zaproszenia VIP";
 }
 <h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
 
-<p>Use this area to provide additional information.</p>
+</br></br></br></br>
+<p>
+    @ViewBag.Greeting, wypełnij formularz aby otrzymać zaproszenie VIP:
+</p>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary()
+    <p>Imię i Nazwisko: @Html.TextBoxFor(x => x.Name)</p>
+    <p>E-mail: @Html.TextBoxFor(x => x.Email)</p>
+    <p>Czy jesteś fotografem? @Html.DropDownListFor(x => x.IsPhotographer, new[] {
+                         new SelectListItem(){ Text = "Tak, jestem fotografem", Value = bool.TrueString },
+                         new SelectListItem(){ Text = "Nie, nie jestem fotografem", Value = bool.FalseString }}, 
+                         "Wybierz opcję")</p>
+    <p>Uzasadnienie(niewymagane dla fotografów): @Html.TextBoxFor(x => x.Application)</p>
+
+    <input type="submit" value="Wyślij formularz" />
+}
